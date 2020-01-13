@@ -41,6 +41,11 @@ server.get('/api/users/:id', (req,res)=>{
 //Create a new user
 server.post('/api/users', (req, res) => {
     const userData = req.body; //need validation here I believe but I'm not sure how...
+     if(!req.body.name || !req.body.bio){
+        res.status(400).json({
+            errorMessage: "Please provide name and bio for the user"
+        })
+    }else
     Users.insert(userData)
     .then(user => {
         res.status(201).json(user);

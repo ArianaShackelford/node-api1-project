@@ -46,7 +46,7 @@ server.get('/api/users/:id', (req,res)=>{
 
 //Create a new user
 server.post('/api/users', (req, res) => {
-    const userData = req.body; //need validation here I believe but I'm not sure how...
+    const userData = req.body; 
      if(!req.body.name || !req.body.bio){
         res.status(400).json({
             errorMessage: "Please provide name and bio for the user"
@@ -86,6 +86,7 @@ server.put('/api/users/:id', (req,res)=>{
     const id = req.params.id;
     Users.update(id, req.body)
     .then(user => {
+        
         if( !user){
             res.status(404).json({
                 message: "The user with the specified ID does not exist"
@@ -94,8 +95,17 @@ server.put('/api/users/:id', (req,res)=>{
             res.status(400).json({
                 errorMessage: "Please provide name and bio for the user"
             })
-        }else
-        res.status(200).json(user);
+        }else{
+        Users.findById(id)
+        .then(selecteduser => {
+            
+            res.status(200).json(selecteduser);
+        })
+        .catch(error => {
+            console.log(error)
+            res.status(500).json({errorMessage: "sorry, we ran into and changing that users info"})
+        })
+    }
     })
     .catch(err => {
         console.log(err);

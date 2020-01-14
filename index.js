@@ -28,6 +28,11 @@ server.get('/api/users', (req, res) => {
 //Get user by id
 server.get('/api/users/:id', (req,res)=>{
     const id = req.params.id;
+    // if(id !== Users.id){
+    //     res.status(404).json({
+    //         message: "The user with the specified ID does not exist"
+    //     })
+    // }else
     Users.findById(id)
     .then(user => {
         res.status(200).json(user);
